@@ -1,29 +1,47 @@
-# Import required modules
-import cv2
-import dlib
+from sklearn.externals import joblib
+from get_face import *
+from get_landmarks import *
 
-# Set up some required objects
-video_capture = cv2.VideoCapture(0)  # Webcam object
-detector = dlib.get_frontal_face_detector()  # Face detector
-predictor = dlib.shape_predictor(
-    "shape_predictor_68_face_landmarks.dat")  # Landmark identifier. Set the filename to whatever you named the downloaded file
 
-while True:
-    ret, frame = video_capture.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    clahe_image = clahe.apply(gray)
+def model_test(input_path):
+    # Loading the SVM model from storage after training
+    svm_classifer = joblib.load('models/svm4.pkl')
 
-    detections = detector(clahe_image, 1)  # Detect the faces in the image
+    image = cv2.imread(input_path)
+    if image is None:
+        print("CANT FIND THE IMAGE: %s!" % input_path)
+        return
 
-    for k, d in enumerate(detections):  # For each detected face
+    get_face(image)
 
-        shape = predictor(clahe_image, d)  # Get coordinates
-        for i in range(1, 68):  # There are 68 landmark points on each face
-            cv2.circle(frame, (shape.part(i).x, shape.part(i).y), 1, (0, 0, 255),
-                       thickness=2)  # For each point, draw a red circle with thickness2 on the original frame
+    pred_data = []
+    landmarks_vec = get_landmarks_from_face(image)
+    if landmarks_vec is None:
+        return
 
-    cv2.imshow("image", frame)  # Display the frame
+    pred_data.append(landmarks_vec)
+    np_pred_data = np.array(pred_data)
+    res = svm_classifer.predict(np_pred_data)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):  # Exit program when the user presses 'q'
-        break
+    print(EMOTIONS[res[0]])
+    cv2.putText(img=image,
+                text=EMOTIONS[res[0]],
+                org=(8, 30),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=1,
+                color=(255, 0, 0),
+                lineType=2)
+
+    cv2.imshow('result_image.jpg', image)
+    cv2.destroyAllWindows()
+
+
+# TEST USE
+
+# input_image_path = "test_image/anger.tiff"
+# input_image_path = "test_image/happy.tiff"
+input_image_path = "test_image/sadness.tiff"
+# input_image_path = "test_image/surprise.tiff"
+
+model_test(input_image_path)
+

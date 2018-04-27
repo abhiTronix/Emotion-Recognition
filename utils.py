@@ -7,9 +7,10 @@ FONT_TYPE = cv2.FONT_HERSHEY_DUPLEX
 SVM_MODEL_PATH = "models/"
 
 # CATEGORIES OF EMOTIONS
-EMOTIONS = ["anger", "happy", "neutral", "sadness", "surprise"]
+EMOTIONS = ["anger", "happy", "sadness", "surprise"]
 
 # PATH OF DIRECTORY OF TRAINING IMAGES
+# ORGANIZED_IMAGES_PATH = "organized_images"
 ORGANIZED_IMAGES_PATH = "organized_images"
 
 # HISTOGRAM EQUALIZATION OBJECT
