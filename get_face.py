@@ -1,5 +1,7 @@
 from utils import *
+import numpy as np
 import dlib
+import copy
 
 
 def get_face(origin_image):
@@ -42,26 +44,62 @@ def get_face(origin_image):
         return None
 
     # Writing the final image into the required path
-    cv2.imwrite("res1.jpg", cv2.resize(roi_gray, (500, 500)))
+    resized_image = cv2.resize(roi_gray, (500, 500))
+    cv2.imwrite("res1.jpg", resized_image)
 
+    # GET THE LANDMARKS FROM IMAGE
     detector = dlib.get_frontal_face_detector()  # Face detector
     predictor = dlib.shape_predictor("data/dlib_data/shape_predictor_68_face_landmarks.dat")
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     clahe_image = clahe.apply(gray)
-
     detections = detector(clahe_image, 1)  # Detect the faces in the image
 
+    # PRINT THE LANDMARKS IN IMAGE
+    landmarks = copy.deepcopy(origin_image)
     for k, d in enumerate(detections):  # For each detected face
         shape = predictor(clahe_image, d)  # Get coordinates
-        for i in range(1, 68):  # There are 68 landmark points on each face
+        for i in range(2, 68):  # There are 68 landmark points on each face
             # For each point, draw a red circle with thickness2 on the original frame
-            cv2.circle(img=origin_image,
-                       center=(shape.part(i).x, shape.part(i).y),
+            x = shape.part(i).x
+            y = shape.part(i).y
+            cv2.circle(img=landmarks,
+                       center=(x, y),
                        radius=1,
-                       color=(255, 255, 255),
+                       color=(255, 0, 0),
                        thickness=2)
-    cv2.imwrite("res2.jpg", origin_image)  # save the frame
+    cv2.imwrite("res2.jpg", landmarks)   # SAVE ALL LANDMARKS
+
+    # PRINT THE CENTER POINT IN IMAGE
+    center = copy.deepcopy(origin_image)
+    x_list = []
+    y_list = []
+    for k, d in enumerate(detections):
+        shape = predictor(clahe_image, d)
+        for i in range(1, 68):
+            x_list.append(float(shape.part(i).x))
+            y_list.append(float(shape.part(i).y))
+
+    x_mean = np.mean(x_list)
+    y_mean = np.mean(y_list)
+    cv2.circle(img=center,
+               center=(int(x_mean), int(y_mean)),
+               radius=1,
+               color=(255, 0, 0),
+               thickness=4)
+    cv2.imwrite("res3.jpg", center)  # SAVE THE CENTER POINT
+
+    # PRINT THE LINES BETWEEN LANDMARKS AND CENTER POINT
+    lines = copy.deepcopy(origin_image)
+    for k, d in enumerate(detections):  # For each detected face
+        shape = predictor(clahe_image, d)  # Get coordinates
+        for i in range(2, 68):  # There are 68 landmark points on each face
+            # For each point, draw a red circle with thickness2 on the original frame
+            x = shape.part(i).x
+            y = shape.part(i).y
+            cv2.line(lines, (x, y), (int(x_mean), int(y_mean)), (255, 0, 0), 2)
+    cv2.imwrite("res4.jpg", lines)  # SAVE THE LINES
 
 
 # TEST USE
-# get_face("sad_face.jpg", "res.jpg")
+image = cv2.imread("test_image\happy.tiff")
+get_face(image)

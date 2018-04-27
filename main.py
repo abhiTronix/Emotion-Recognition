@@ -26,21 +26,22 @@ def model_test(input_path):
     print(EMOTIONS[res[0]])
     cv2.putText(img=image,
                 text=EMOTIONS[res[0]],
-                org=(8, 30),
+                org=(0, 20),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                 fontScale=1,
-                color=(255, 0, 0),
+                color=(255, 255, 255),
                 lineType=2)
 
     cv2.imshow('result_image.jpg', image)
+    cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
 # TEST USE
 
 # input_image_path = "test_image/anger.tiff"
-# input_image_path = "test_image/happy.tiff"
-input_image_path = "test_image/sadness.tiff"
+input_image_path = "test_image/happy.tiff"
+# input_image_path = "test_image/sadness.tiff"
 # input_image_path = "test_image/surprise.tiff"
 
 model_test(input_image_path)
