@@ -6,7 +6,7 @@ import copy
 
 def get_face(origin_image):
     if origin_image is None:
-        print "CANT FIND THE IMAGE!"
+        print("CANT FIND THE IMAGE!")
         return
 
     # Converts an image to gray
@@ -18,10 +18,10 @@ def get_face(origin_image):
     faceCascade3 = cv2.CascadeClassifier(HAAR_CLASSIFIER_PATH_3)
     faceCascade4 = cv2.CascadeClassifier(HAAR_CLASSIFIER_PATH_4)
 
-    face1 = faceCascade1.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
-    face2 = faceCascade2.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
-    face3 = faceCascade3.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
-    face4 = faceCascade4.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
+    face1 = faceCascade1.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    face2 = faceCascade2.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    face3 = faceCascade3.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    face4 = faceCascade4.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
     # Test output
     if len(face1) == 1:
@@ -33,7 +33,7 @@ def get_face(origin_image):
     elif len(face4) == 1:
         req_face = face4
     else:
-        print "CANT FIND A FACE IN THAT IMAGE"
+        print("CANT FIND A FACE IN THAT IMAGE")
         return
 
     roi_gray = None
@@ -101,5 +101,5 @@ def get_face(origin_image):
 
 
 # TEST USE
-image = cv2.imread("test_image\happy.tiff")
+image = cv2.imread("test_image/anger.tiff")
 get_face(image)

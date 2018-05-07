@@ -39,7 +39,7 @@ def get_svm_model_with_test():
         # Test THE SVM MODEL BY TEST IMAGES
         np_test_data = np.array(predicted_data)
         final_pred = svm_classifer.score(np_test_data, predicted_labels)
-        print "Set %d: Matching percentage: %0.6f%%" % (i+1, final_pred*100)
+        print("Set %d: Matching percentage: %0.6f%%" % (i+1, final_pred*100))
         accuracy.append(final_pred)
 
     # SAVE THE SVM MODEL INTO DISK.

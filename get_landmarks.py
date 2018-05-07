@@ -12,7 +12,7 @@ def get_landmarks_without_test():
         for p in training_paths:
             image = cv2.imread(p)
             if image is None:
-                print "CANT FIND THE IMAGE! %s" % p
+                print("CANT FIND THE IMAGE! %s" % p)
                 return
             # Converts an image to gray
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -33,13 +33,13 @@ def get_landmarks_with_test():
     for emotion in EMOTIONS:
         training_paths, predicted_paths = get_training_and_predicted_images_by_emotion(emotion)
 
-        print "len: %d %d" % (len(training_paths), len(predicted_paths))
+        print("len: %d %d" % (len(training_paths), len(predicted_paths)))
 
         # get landmarks from training image
         for p in training_paths:
             image = cv2.imread(p)
             if image is None:
-                print "CANT FIND THE IMAGE! %s" % p
+                print("CANT FIND THE IMAGE! %s" % p)
                 return
             # Converts an image to gray
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -56,7 +56,7 @@ def get_landmarks_with_test():
         for p in predicted_paths:
             image = cv2.imread(p)
             if image is None:
-                print "CANT FIND THE IMAGE! %s" % p
+                print("CANT FIND THE IMAGE! %s" % p)
                 return
             # Converts an image to gray
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -67,7 +67,7 @@ def get_landmarks_with_test():
             else:
                 predicted_data.append(landmarks_vec)
                 predicted_labels.append(EMOTIONS.index(emotion))
-        print predicted_labels
+        print(predicted_labels)
 
     return training_data, training_labels, predicted_data, predicted_labels
 

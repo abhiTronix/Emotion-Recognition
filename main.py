@@ -39,8 +39,8 @@ def model_test(input_path):
 
 # TEST USE
 
-# input_image_path = "test_image/anger.tiff"
-input_image_path = "test_image/happy.tiff"
+input_image_path = "test_image/anger.tiff"
+# input_image_path = "test_image/happy.tiff"
 # input_image_path = "test_image/sadness.tiff"
 # input_image_path = "test_image/surprise.tiff"
 

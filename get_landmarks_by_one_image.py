@@ -1,22 +1,22 @@
 import dlib
 import math
 import numpy as np
-import cv2
-from utils import CLAHE, LANDMARKS_PREDICTOR_PATH
+from utils import *
 
-
+# default face detector
 face_detector = dlib.get_frontal_face_detector()
+# default landmarks detector
 landmarks_predictor = dlib.shape_predictor(LANDMARKS_PREDICTOR_PATH)
 
 
 def get_landmarks_from_face(gray_image):
     if gray_image is None:
         return None
-    face_detections = face_detector(gray_image, 1)
 
+    face_detections = face_detector(gray_image, 1)
     landmarks_v = []
 
-    # #Store X and Y coordinates in two lists
+    # Store X and Y coordinates in two lists
     for k, d in enumerate(face_detections):
         shape = landmarks_predictor(gray_image, d)
         x_list = []
